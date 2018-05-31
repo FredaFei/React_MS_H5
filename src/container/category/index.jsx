@@ -29,7 +29,7 @@ class GoodItem extends Component{
 }
 const GoodList = ({goodList,openGoodDetailFn})=>{
     return (
-            <ul>
+            <ul >
                 {
                     goodList.map((good, goodIndex) => {
                         return (
@@ -101,6 +101,7 @@ class CategoryList extends Component{
         }
     }
     openGoodDetailFn = (id) => {
+        console.log(id)
         this.props.onGetGoodDetail(id)
         this.setState({showSkuToast: true})
     }
@@ -109,7 +110,7 @@ class CategoryList extends Component{
             showSkuToast: bool
         })
     }
-    addShopcart = (id,count)=>{
+    setCount = (id,count)=>{
         // this.props.onChangeBuyCount(id,count)
     }
     render() {
@@ -122,7 +123,7 @@ class CategoryList extends Component{
         })
         let goodsItem = categoryInfo.goods.map((item, index) => {
             return (
-                <li className="category-goods-item" key={index}>
+                <li className="category-goods-item" key={item.type}>
                     <h1 className="category-title">{item.name}</h1>
                     <GoodList goodList={item.goodList} openGoodDetailFn={this.openGoodDetailFn}></GoodList>
                 </li>

@@ -56,3 +56,17 @@ export const changeBuyCount = (goodId,count)=>{
     }
   }
 } 
+export const getShopcartList = ()=>{
+  return async dispatch=>{
+    try{
+      let result = await http(url.shopCart)
+      console.log(result)
+      dispatch({
+        type: types.SHOPCART,
+        shopList: result.data.shopcartList
+      })
+    }catch(err){
+      console.log(err)
+    }
+  }
+} 

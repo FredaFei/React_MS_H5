@@ -1,12 +1,13 @@
 import * as types from "@/actionTypes/";
 
-const defaultState = {
-  goods: []
-};
+const defaultState = [];
+
 export default (state = defaultState, action) => {
+  console.log(state)
+  console.log(action)
   switch (action.type) {
-    case types.CATEGORY:
-      return { ...state, ...action.categoryInfo };
+    case types.SHOPCART:
+      return [...state, action.shopList];
     default:
       return state;
   }
