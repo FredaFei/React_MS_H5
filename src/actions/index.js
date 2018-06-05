@@ -63,9 +63,11 @@ export const getShopcartList = () => {
             let shopList = result.data.shopcartList
             shopList.forEach(item => {
                 item.checked = false
+                item.editing = false
                 item.removechecked = false
                 item.goods.forEach(good=>{
                     good.checked = false
+                    good.editing = false
                     good.removechecked = false
                 })
             })
@@ -97,3 +99,23 @@ export const shopToggle = (shopId) =>({
     type: types.SHOPTOGGLE,
     shopId
 })
+export const checkedAllShop = () =>({
+    type: types.CHECKEDALLSHOP
+})
+export const toggleEditStatus = (shopId) =>({
+    type: types.TOGGLESTATUS,
+    shopId
+})
+export const deleteGood = (skuIdArr) => {
+    return async dispatch => {
+        try {
+            await http(url.deleteGood, {skuIdArr})
+            dispatch({
+                type: types.DELETEGOOD,
+                skuIdArr
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}

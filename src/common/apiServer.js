@@ -4,8 +4,7 @@ let url = {
     goodDetail: '/goodDetail',
     setCount: '/setCount',
     shopCart: '/shopCart',
-    deleteGood: '/deleteGood',
-    deleteMoreGoods: '/deleteMoreGoods'
+    deleteGood: '/removeGoods'
 }
 
 let baseUrl = 'http://rap2api.taobao.org/app/mock/12272'

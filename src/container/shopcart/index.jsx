@@ -1,16 +1,14 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {connect} from 'react-redux';
 import * as actions from '@/actions/';
-import {http} from '@/common/http'
-import url from '@/common/apiServer'
 
 import Cell from 'components/cell/'
-import Controller from 'components/controller/'
 import ScrollBox from 'components/scrollBox/'
 import CopyRight from 'components/copyRight/'
 import ShopItem from 'components/shopItem.jsx'
+import ShopcartFoot from 'components/shopcartFoot.jsx'
 import './index.scss'
 
 const EmptyCart = () => {
@@ -23,59 +21,57 @@ const EmptyCart = () => {
     )
 }
 
-class ShopList extends Component{
-    componentWillReceiveProps(nextProps){
+class ShopList extends Component {
+    componentWillReceiveProps(nextProps) {
         console.log('nextProps list')
         console.log(nextProps.shopcart)
     }
-    render(){
+
+    render() {
         let {shopcart} = this.props
         return (
             <div className="shop-content">
                 {
-                    shopcart.map((shop, shopIndex) => <ShopItem shop={shop} key={shopIndex}></ShopItem>)
+                    shopcart.map((shop, shopIndex) => <ShopItem shop={shop} shopIndex={shopIndex} key={shopIndex}></ShopItem>)
                 }
             </div>
         )
     }
 }
-class Shopcart extends Component {
-    state = {
-        editing: false,
-        shopList: [],
-        showToast: false,
-        text: '确定删除该商品吗？',
-        removeData: null
-    }
-    allChecked = false
-    allRemoveChecked = false
-    checkedList = []
-    removeCheckedList = []
-    total = 0
 
-    componentWillMount(){
-        this.props.onGetShopcartList()
+class Shopcart extends Component {
+    static propTypes = {
+        // shopcartList: PropTypes.array.isRequired,
+        onGetShopcartList: PropTypes.func.isRequired
     }
-    componentWillReceiveProps(nextProps){
+
+    componentDidMount() {
+        console.log(this.props)
+        if (this.props.shopcartList.length === 0) {
+            this.props.onGetShopcartList()
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
         console.log('nextProps index')
+        // let {shopcart} = nextProps
         console.log(nextProps)
     }
+
     render() {
-        let {editing, shopList, showToast, text} = this.state
-        let editText = editing ? '完成' : '编辑'
-        let delText = editing ? '删除' : '结算'
-        let {shopcart} = this.props
+        let {shopcartList,edit} = this.props
+        console.log(this.props)
         let content = null
-        if (shopcart.length === 0) {
+        if (shopcartList.length === 0) {
             content = <EmptyCart/>
-        }else{
-            content = <ShopList shopcart={shopcart}/>
+        } else {
+            content = <ShopList shopcart={shopcartList} edit={edit} />
         }
         return (
             <div className="shopcart-wrap">
                 <ScrollBox>
                     <div className="shopcart-hd">
-                        <Cell />
+                        <Cell/>
                     </div>
                     <div className="shopcart-bd">
                         {content}
@@ -84,28 +80,7 @@ class Shopcart extends Component {
                         </div>
                     </div>
                 </ScrollBox>
-                <div className="shopcart-ft page-ft clearfix">
-                    <div className="left">
-                        <div className="checkbox">
-                            <label
-                                className={classnames({'active': editing ? this.allRemoveChecked : this.allChecked})}>
-                                <input type="checkbox" checked={editing ? this.allRemoveChecked : this.allChecked}
-                                       onChange={this.toggleAllFn}/>
-                            </label>
-                        </div>
-                        <label>全选</label>
-                    </div>
-                    {
-                        !editing &&
-                        <div className="right">
-                            <div className="sum-price">合计：￥{this.total.toFixed(2)}<p>不含运费</p></div>
-                        </div>
-                    }
-                    <button
-                        className={classnames('pay-btn', {
-                            'active': editing ? this.removeCheckedList.length !== 0 : this.checkedList.length !== 0
-                        })} onClick={this.goPayOrDeleteFn}>{delText}</button>
-                </div>
+                <ShopcartFoot shopcartList={shopcartList} edit={edit}/>
             </div>
         );
 
@@ -113,15 +88,15 @@ class Shopcart extends Component {
 }
 
 
-const mapStateToProps = (state)=>{
+const mapStateToProps = (state) => {
     console.log(state)
     let {shopcart} = state
-    return {shopcart}
+    let {shopcartList, edit} = shopcart
+    return {shopcartList, edit}
 }
-const mapDispatchToProps = (dispatch,ownProps)=>{
-    let {shopId,goodId} = ownProps
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onGetShopcartList: ()=>dispatch(actions.getShopcartList())
+        onGetShopcartList: () => dispatch(actions.getShopcartList()),
     }
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Shopcart)
+export default connect(mapStateToProps, mapDispatchToProps)(Shopcart)
