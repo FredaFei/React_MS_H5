@@ -18,7 +18,7 @@ class ShopItem extends Component {
     editText: "编辑"
   };
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps item");
+    console.log("componentWillReceiveProps item");
     console.log(nextProps);
   }
 
@@ -30,24 +30,22 @@ class ShopItem extends Component {
     this.props.onToggleGood(good.skuId);
   };
   deleteGoodsFn = (event, skuId) => {
-      event.persist()
-    this.props.onDeleteGood([skuId]);
-    // alert('提示', '确定要删除这个商品吗', [
-    //   { text: '取消', onPress: () => console.log('cancel') },
-    //   { text: '确定', onPress: () => this.props.onDeleteGood([skuId]) },
-    // ])
+    event.persist();
+    alert('提示', '确定要删除这个商品吗', [
+      { text: '取消', onPress: () => false },
+      { text: '确定', onPress: () => this.props.onDeleteGood([skuId]) },
+    ])
   };
 
   render() {
     let { editText } = this.state;
     let { shop } = this.props;
-    console.log('shop item')
+    console.log("shop item");
     console.log(this.props);
     return (
       <section className="shop-item">
         <ShopName shop={shop} />
         {shop.goods.map((good, index) => {
-          console.log(good);
           return (
             <div className="shopcart-list" key={index}>
               <div className="checkbox">

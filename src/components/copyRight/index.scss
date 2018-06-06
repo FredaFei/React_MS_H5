@@ -1,16 +1,16 @@
-.copyright{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 1.4rem;
-    text-align: center;
-    color: #bababa;
-    background: #efefef;
-    .name{
-        font-size: .32rem;
-    }
-    .spec{
-        font-size: .24rem;
-    }
+.copyright {
+  position: fixed;
+  bottom: 1rem;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  color: #bababa;
+  background: #efefef;
+  .name {
+    font-size: .32rem;
+  }
+  .spec {
+    font-size: .24rem;
+    margin-bottom: .1rem;
+  }
 }
