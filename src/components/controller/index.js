@@ -19,12 +19,14 @@ class Controller extends Component {
     }
     changeInputNum = (e)=>{
         let num = +(e.target.value)
-        this.props.onChangeNum(this._checkCount(num))
+        let count = this._checkCount(num)
+        this.props.onChangeNum(count)
     }
     changeCountFn = (val)=>{
         let {quantity} = this
         quantity = quantity + val
-        this.props.onChangeNum(this._checkCount(quantity))
+        let count = this._checkCount(quantity)
+        this.props.onChangeNum(count)
     }
     _checkCount(num){
         const {stock} = this.props
@@ -39,7 +41,7 @@ class Controller extends Component {
         return (
             <div className="controller">
                 <button className={classnames('btn-oprator reduce',{'disabled':reduceUnactive})} disabled={reduceUnactive} onClick={this.changeCountFn.bind(this,-1)}>-</button>
-                <input type="number" name="count" className="input-num" value={this.quantity} onChange={this.changeInputNum}/>
+                <input type="number" name="count" className="input-num" value={this.quantity} onChange={e=>this.changeInputNum.bind(this,e)}/>
                 <button className={classnames('btn-oprator add',{'disabled':addUnactive})} disabled={addUnactive} onClick={this.changeCountFn.bind(this,1)}>+</button>
             </div>
         )

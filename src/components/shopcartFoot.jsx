@@ -4,6 +4,7 @@ import classnames from "classnames";
 import { connect } from "react-redux";
 import * as actions from "@/actions/";
 import { Modal } from "antd-mobile";
+
 const alert = Modal.alert;
 
 class ShopcartFoot extends Component {
@@ -15,9 +16,7 @@ class ShopcartFoot extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps foot");
-    console.log(nextProps);
-    let { shopcartList,edit } = nextProps;
+    let { shopcartList, editing } = nextProps;
     let checkedList = [];
     shopcartList.forEach(shop => {
       shop.goods.forEach(good => {
@@ -29,10 +28,11 @@ class ShopcartFoot extends Component {
     let total = checkedList.reduce((prevTotal, currentGood) => {
       return prevTotal + currentGood.price * currentGood.count;
     }, 0);
-    let allChecked = shopcartList.every(shop => shop.checked);
+    let allChecked = shopcartList.length !== 0 && shopcartList.every(shop => shop.checked);
     this.setState({ checkedList });
     this.setState({ total: total.toFixed(2) });
     this.setState({ allChecked });
+    this.setState({ editing });
   }
 
   toggleAllFn = e => {
@@ -40,25 +40,24 @@ class ShopcartFoot extends Component {
     this.props.onCheckedAll();
     this.setState({ allChecked });
   };
-  goPayOrDeleteFn() {
-    let { edit } = this.props;
-    let {checkedList} = this.state
-    let skuId = []
-    checkedList.forEach(good=>{
-        skuId.push(good.skuId)
-    })
-    if (edit) {
+
+  goPayOrDeleteFn = () => {
+    let { checkedList, editing } = this.state;
+    let skuId = [];
+    checkedList.forEach(good => {
+      skuId.push(good.skuId);
+    });
+    if (editing) {
       alert("提示", "确定要删除这个商品吗", [
         { text: "取消", onPress: () => false },
-        { text: "确定", onPress: () => this.props.onDeleteGood([skuId]) }
+        { text: "确定", onPress: () => this.props.onDeleteGood(skuId) }
       ]);
     }
-  }
+  };
 
   render() {
-    let { allChecked, total, checkedList } = this.state;
-    let { edit } = this.props;
-    let delText = edit ? "删除" : "结算";
+    let { allChecked, total, checkedList, editing } = this.state;
+    let delText = editing ? "删除" : "结算";
     return (
       <div className="shopcart-ft page-ft clearfix">
         <div className="left">
@@ -73,7 +72,7 @@ class ShopcartFoot extends Component {
           </div>
           <label>全选</label>
         </div>
-        {!edit && (
+        {!editing && (
           <div className="right">
             <div className="sum-price">
               合计：￥{total}
@@ -95,10 +94,9 @@ class ShopcartFoot extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state)
-    let {shopcart} = state
-    let {shopcartList, edit} = shopcart
-    return {shopcartList, edit}
+  let { shopcart } = state;
+  let { shopcartList, editing } = shopcart;
+  return { shopcartList, editing };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {

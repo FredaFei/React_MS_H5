@@ -40,50 +40,52 @@
             color: #38f;
           }
         }
-        .shopcart-list {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: row;
+        .shopcartgood-list {
           background-color: rgb(249, 249, 249);
           padding: 0.1rem 0.2rem;
           margin-bottom: .2rem;
           position: relative;
-          .check-box {
-            flex: 0 0 0.6rem;
-          }
-          img {
-            flex: 0 0 1.2rem;
-            width: 1.8rem;
-            height: 1.8rem;
-            margin-left: .2rem;
-          }
-          .info {
-            flex: 1;
-            padding-left: 0.18rem;
-            .name {
-              text-align: justify;
-              font-size: 0.28rem;
-              color: #333333;
+          .item-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            .check-box {
+              flex: 0 0 0.6rem;
             }
-            .sku-text {
-              padding-top: 0.08rem;
-              color: #666;
+            img {
+              flex: 0 0 1.2rem;
+              width: 1.8rem;
+              height: 1.8rem;
+              margin-left: .2rem;
             }
-            .sku {
-              padding-top: 0.16rem;
-              position: relative;
-              .price {
-                color: #f44;
-                font-size: 0.34rem;
+            .info {
+              flex: 1;
+              padding-left: 0.18rem;
+              .name {
+                text-align: justify;
+                font-size: 0.28rem;
+                color: #333333;
               }
-              .quantity {
-                position: absolute;
-                right: 0;
-                bottom: 0;
-                text-align: right;
-                color: #dddddd;
-                font-size: 0.32rem;
+              .sku-text {
+                padding-top: 0.08rem;
+                color: #666;
+              }
+              .sku {
+                padding-top: 0.16rem;
+                position: relative;
+                .price {
+                  color: #f44;
+                  font-size: 0.34rem;
+                }
+                .quantity {
+                  position: absolute;
+                  right: 0;
+                  bottom: 0;
+                  text-align: right;
+                  color: #dddddd;
+                  font-size: 0.32rem;
+                }
               }
             }
           }
@@ -112,7 +114,7 @@
   .shopcart-ft {
     position: absolute;
     bottom: 0;
-    z-index: 1000;
+    z-index: 99;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

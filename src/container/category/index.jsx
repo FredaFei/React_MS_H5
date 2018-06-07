@@ -7,33 +7,15 @@ import * as actions from '@/actions/'
 import { Toast } from "antd-mobile";
 import BScroll from 'better-scroll'
 import SkuToast from 'components/productDetail/'
+import CategoryGoodItem from 'components/categoryGoodItem'
 import './index.scss'
-
-class GoodItem extends Component{
-    detailToastFn = (goodId)=>{
-        this.props.onOpenGoodDetail(goodId)
-    }
-    render(){
-        let {good} = this.props
-        return (
-            <li className="goods-cell" >
-                <div className="img"><img src={good.image} alt=""/></div>
-                <div className="desc">
-                    <div className="info">{good.name}</div>
-                    <div className="price">￥{good.price}</div>
-                    <div className="control" onClick={this.detailToastFn.bind(this,good.goodId)}>+</div>
-                </div>
-            </li>
-        )
-    }
-}
 const GoodList = ({goodList,openGoodDetailFn})=>{
     return (
             <ul >
                 {
                     goodList.map((good, goodIndex) => {
                         return (
-                            <GoodItem key={goodIndex} good={good} onOpenGoodDetail={openGoodDetailFn}></GoodItem>
+                            <CategoryGoodItem key={goodIndex} good={good}></CategoryGoodItem>
                         )
                     })
                 }
@@ -43,7 +25,6 @@ const GoodList = ({goodList,openGoodDetailFn})=>{
 class CategoryList extends Component{
     state = {
         menuIndex: 0,
-        showSkuToast: false,
     }
     goodsHeightList = [0]
     componentWillMount(){
@@ -61,7 +42,8 @@ class CategoryList extends Component{
         this.menuScroll = new BScroll(this.refs.menuWrapper, {click: true})
         this.goodsScroll = new BScroll(this.refs.goodsWrapper, {
             click: true,
-            probeType: 3
+            probeType: 3,
+            stopPropagation: true 
         })
         this.goodsScroll.on('scroll', pos => {
             if (!pos.y) {
@@ -100,22 +82,13 @@ class CategoryList extends Component{
             this.goodsScroll.scrollToElement(aGoodList[index], 100)
         }
     }
-    openGoodDetailFn = (id) => {
-        console.log(id)
-        this.props.onGetGoodDetail(id)
-        this.setState({showSkuToast: true})
-    }
-    closeSkuFn = (bool)=>{
-        this.setState({
-            showSkuToast: bool
-        })
-    }
-    setCount = (id,count)=>{
-        // this.props.onChangeBuyCount(id,count)
+    closeSkuFn = ()=>{
+        
     }
     render() {
-        let {menuIndex, showSkuToast} = this.state
+        let {menuIndex} = this.state
         let {categoryInfo,goodDetail} = this.props
+        console.log(goodDetail)
         let menuItem = categoryInfo.goods.map((item, index) => {
             return <li className={classnames('category-menu-item', {'active': menuIndex === index})}
                        onClick={this.selectMenu.bind(this, index)}
@@ -125,7 +98,7 @@ class CategoryList extends Component{
             return (
                 <li className="category-goods-item" key={item.type}>
                     <h1 className="category-title">{item.name}</h1>
-                    <GoodList goodList={item.goodList} openGoodDetailFn={this.openGoodDetailFn}></GoodList>
+                    <GoodList goodList={item.goodList}></GoodList>
                 </li>
             );
         })
@@ -140,8 +113,8 @@ class CategoryList extends Component{
                     </div>
                 </div>
                 {
-                    showSkuToast &&<SkuToast 
-                        goodDetail={goodDetail} 
+                    goodDetail.showSkuToast &&<SkuToast 
+                        goodDetail={goodDetail.goodDetails} 
                         closeSkuFn={this.closeSkuFn}
                         onShopcart={this.addShopcart} />
                 }
@@ -154,6 +127,8 @@ class CategoryList extends Component{
 const mapStateToProps = (state)=>{
     console.log(state)
     let {categoryInfo,goodDetail} = state
+    console.log('goodDetail')
+    console.log(goodDetail)
     return {categoryInfo,goodDetail}
 }
 const mapDispatchToProps = (dispatch,ownProps)=>{

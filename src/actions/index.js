@@ -1,6 +1,8 @@
 import {http} from '../common/http'
 import url from '../common/apiServer'
 import * as types from '../actionTypes/'
+import {makeActionCreator} from './actionCreator'
+
 
 import {Toast} from "antd-mobile";
 
@@ -36,19 +38,20 @@ export const getGoodDetail = (goodId) => {
             let result = await http(url.goodDetail, {goodId})
             dispatch({
                 type: types.GOODETAIL,
-                goodDetail: result.data
+                goodDetails: result.data
             })
         } catch (err) {
             console.log(err)
         }
     }
 }
-export const changeBuyCount = (goodId, count) => {
+export const changeBuyCount = (skuId, count) => {
     return async dispatch => {
         try {
-            let result = await http(url.setCount, {goodId, count})
+            let result = await http(url.setCount, {skuId, count})
             dispatch({
                 type: types.CHANGEBUYCOUNT,
+                skuId,
                 count
             })
         } catch (err) {
@@ -80,32 +83,6 @@ export const getShopcartList = () => {
         }
     }
 }
-
-export const toggleGood = (skuId) =>{
-    return{
-        type: types.TOGGLEGOOD,
-        skuId
-    }
-}
-export const toggleShop = (shopId) =>({
-    type: types.TOGGLESHOP,
-    shopId
-})
-export const shopChecked = (shopId) =>({
-    type: types.ONECHECKEDSHOP,
-    shopId
-})
-export const shopToggle = (shopId) =>({
-    type: types.SHOPTOGGLE,
-    shopId
-})
-export const checkedAllShop = () =>({
-    type: types.CHECKEDALLSHOP
-})
-export const toggleEditStatus = (shopId) =>({
-    type: types.TOGGLESTATUS,
-    shopId
-})
 export const deleteGood = (skuIdArr) => {
     return async dispatch => {
         try {
@@ -119,3 +96,10 @@ export const deleteGood = (skuIdArr) => {
         }
     }
 }
+
+export const toggleGood = makeActionCreator(types.TOGGLEGOOD,'skuId')
+export const toggleShop = makeActionCreator(types.TOGGLESHOP,'shopId')
+export const shopChecked = makeActionCreator(types.ONECHECKEDSHOP,'shopId')
+export const checkedAllShop = makeActionCreator(types.CHECKEDALLSHOP)
+export const toggleEditStatus = makeActionCreator(types.TOGGLESTATUS,'shopId')
+

@@ -4,12 +4,6 @@ import classnames from 'classnames';
 import {connect} from 'react-redux';
 import * as actions from '@/actions/';
 
-import Cell from 'components/cell/'
-import Controller from 'components/controller/'
-
-import { Modal } from "antd-mobile";
-const alert = Modal.alert;
-
 class ShopName extends Component {
     static propTypes = {
         shop: PropTypes.object.isRequired
@@ -18,8 +12,6 @@ class ShopName extends Component {
         shopChecked: false
     }
     componentWillReceiveProps(nextProps){
-        console.log('nextProps shopname')
-        console.log(nextProps)
         let {shop} = nextProps
         var shopChecked = shop.goods.every(good=>good.checked)
         this.setState({shopChecked})
@@ -60,7 +52,7 @@ class ShopName extends Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onToggleShop: (shopId) => dispatch(actions.shopToggle(shopId)),
+        onToggleShop: (shopId) => dispatch(actions.toggleShop(shopId)),
         onToggleStatus: (shopId) => dispatch(actions.toggleEditStatus(shopId)),
     }
 }

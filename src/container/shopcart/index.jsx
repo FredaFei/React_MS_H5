@@ -7,11 +7,6 @@ import './index.scss'
 
 
 class Shopcart extends Component {
-    componentWillReceiveProps(nextProps) {
-        console.log('nextProps index')
-        console.log(nextProps)
-    }
-
     render() {
         return (
             <div className="shopcart-wrap">

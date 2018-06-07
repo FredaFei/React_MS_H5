@@ -1,96 +1,117 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import * as actions from "@/actions/";
 
-import Cell from "components/cell/";
+import ShopDeleteItem from "components/shopDeleteItem/";
 import Controller from "components/controller/";
 import ShopName from "components/shopName";
-import { Modal } from "antd-mobile";
+import {Modal} from "antd-mobile";
 const alert = Modal.alert;
 
-class ShopItem extends Component {
-  static propTypes = {
-    shop: PropTypes.object.isRequired
-  };
-  state = {
-    editText: "编辑"
-  };
-  componentWillReceiveProps(nextProps) {
-    console.log("componentWillReceiveProps item");
-    console.log(nextProps);
-  }
-
-  toggleShop(shopId) {
-    this.props.onToggleShop(shopId);
-  }
-
-  toggleGoodsFn = good => {
-    this.props.onToggleGood(good.skuId);
-  };
-  deleteGoodsFn = (event, skuId) => {
-    event.persist();
-    alert('提示', '确定要删除这个商品吗', [
-      { text: '取消', onPress: () => false },
-      { text: '确定', onPress: () => this.props.onDeleteGood([skuId]) },
-    ])
-  };
-
-  render() {
-    let { editText } = this.state;
-    let { shop } = this.props;
-    console.log("shop item");
-    console.log(this.props);
+const ShopEditItem = ({good, toggleGoodsFn, deleteGoodsFn, onChangeNum}) => {
     return (
-      <section className="shop-item">
-        <ShopName shop={shop} />
-        {shop.goods.map((good, index) => {
-          return (
-            <div className="shopcart-list" key={index}>
-              <div className="checkbox">
-                <label className={classnames({ active: good.checked })}>
-                  <input
-                    type="checkbox"
-                    onChange={this.toggleGoodsFn.bind(this, good)}
-                  />
-                </label>
-              </div>
-              <img src={good.imgUrl} alt="" />
-              {/*正常状态*/}
-              <div className="info">
-                <div className="name">{good.skuDesc}</div>
-                <div className="sku-text">{good.skuText}</div>
-                <div className="sku">
-                  <div className="price">￥{good.price}</div>
-                  <div className="quantity">x{good.count}</div>
+        <div className="shopcartgood-list" key={good.skuId}>
+            <div className="item-content">
+                <div className="checkbox">
+                    <label className={classnames({active: good.checked})}>
+                        <input type="checkbox" onChange={toggleGoodsFn}/>
+                    </label>
                 </div>
-              </div>
-              {/*编辑状态*/}
-              {good.editing && (
-                <div
-                  className="del-btn"
-                  onClick={e => {
-                    e.persist = () => {};
-                    this.deleteGoodsFn(e, good.skuId);
-                  }}
-                >
-                  删除
+                <img src={good.imgUrl} alt=""/>
+                <div className="info">
+                    <Controller stock={good.stock}
+                                buyCount={good.count}
+                                maxCount={good.maxCount}
+                                onChangeNum={onChangeNum}/>
+                    <div className="sku">
+                        <div className="price">￥{good.price}</div>
+                        <div className="quantity">x{good.count}</div>
+                    </div>
                 </div>
-              )}
+                <div className="del-btn" onClick={deleteGoodsFn}>删除</div>
             </div>
-          );
-        })}
-      </section>
-    );
-  }
+        </div>
+    )
+}
+const ShopGoodItem = ({good, deleteGoodsFn, toggleGoodsFn}) => {
+    return (
+        <ShopDeleteItem key={good.skuId} onSlideDeleteGood={deleteGoodsFn}>
+            <div className="shopcartgood-list">
+                <div className="item-content">
+                    <div className="checkbox">
+                        <label className={classnames({active: good.checked})}>
+                            <input type="checkbox" onChange={toggleGoodsFn}/>
+                        </label>
+                    </div>
+                    <img src={good.imgUrl} alt=""/>
+                    <div className="info">
+                        <div className="name">{good.skuDesc}</div>
+                        <div className="sku-text">{good.skuText}</div>
+                        <div className="sku">
+                            <div className="price">￥{good.price}</div>
+                            <div className="quantity">x{good.count}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ShopDeleteItem>
+    )
+}
+
+class ShopItem extends Component {
+    static propTypes = {
+        shop: PropTypes.object.isRequired
+    };
+    state = {
+        editText: "编辑"
+    };
+    toggleShop(shopId) {
+        this.props.onToggleShop(shopId);
+    }
+    toggleGoodsFn = good => {
+        this.props.onToggleGood(good.skuId);
+    };
+    onChangeNum = (good, count) => {
+        this.props.onChangeCount(good.skuId, count)
+    }
+    deleteGoodsFn = (skuId) => {
+        alert('提示', '确定要删除这个商品吗', [
+            {text: '取消', onPress: () => false},
+            {text: '确定', onPress: () => this.props.onDeleteGood([skuId])},
+        ])
+    };
+
+    render() {
+        let {editText} = this.state;
+        let {shop} = this.props;
+        return (
+            <section className="shop-item">
+                <ShopName shop={shop}/>
+                {shop.goods.map((good, index) => {
+                    return shop.editing ? <ShopEditItem key={good.skuId} good={good}
+                                                        toggleGoodsFn={this.toggleGoodsFn.bind(this, good)}
+                                                        onChangeNum={this.onChangeNum.bind(this, good, ...arguments)}
+                                                        deleteGoodsFn={this.deleteGoodsFn.bind(this, good.skuId)}/>
+                        : <ShopGoodItem
+                            key={good.skuId}
+                            good={good}
+                            toggleGoodsFn={this.toggleGoodsFn.bind(this, good)}
+                            onSlideDeleteGood={this.deleteGoodsFn.bind(this, good.skuId)}
+                            deleteGoodsFn={this.deleteGoodsFn.bind(this, good.skuId)}/>
+                })}
+            </section>
+        );
+    }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    onToggleGood: skuId => dispatch(actions.toggleGood(skuId)),
-    onToggleShop: shopId => dispatch(actions.toggleShop(shopId)),
-    onDeleteGood: skuIdArr => dispatch(actions.deleteGood(skuIdArr))
-  };
+    return {
+        onToggleGood: skuId => dispatch(actions.toggleGood(skuId)),
+        onToggleShop: shopId => dispatch(actions.toggleShop(shopId)),
+        onDeleteGood: skuIdArr => dispatch(actions.deleteGood(skuIdArr)),
+        onChangeCount: (skuId, count) => dispatch(actions.changeBuyCount(skuId, count))
+    };
 };
 export default connect(null, mapDispatchToProps)(ShopItem);
