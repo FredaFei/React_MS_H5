@@ -1,37 +1,41 @@
-import React,{Component} from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import * as actions from '@/actions/'
 
-import { Toast } from "antd-mobile";
+import {Toast} from "antd-mobile";
 import BScroll from 'better-scroll'
 import SkuToast from 'components/productDetail/'
 import CategoryGoodItem from 'components/categoryGoodItem'
 import './index.scss'
-const GoodList = ({goodList,openGoodDetailFn})=>{
+
+const GoodList = ({goodList}) => {
     return (
-            <ul >
-                {
-                    goodList.map((good, goodIndex) => {
-                        return (
-                            <CategoryGoodItem key={goodIndex} good={good}></CategoryGoodItem>
-                        )
-                    })
-                }
-            </ul>
-        )
+        <ul>
+            {
+                goodList.map((good, goodIndex) => {
+                    return (
+                        <CategoryGoodItem key={goodIndex} good={good}></CategoryGoodItem>
+                    )
+                })
+            }
+        </ul>
+    )
 }
-class CategoryList extends Component{
+
+class CategoryList extends Component {
     state = {
         menuIndex: 0,
     }
     goodsHeightList = [0]
-    componentWillMount(){
+
+    componentWillMount() {
         Toast.loading("正在加载", 0);
         this.props.onGetCategory()
     }
-    componentWillReceiveProps(nextProps){
+
+    componentWillReceiveProps(nextProps) {
         this.initScroll()
         setTimeout(() => {
             this.calculateHeight()
@@ -43,7 +47,7 @@ class CategoryList extends Component{
         this.goodsScroll = new BScroll(this.refs.goodsWrapper, {
             click: true,
             probeType: 3,
-            stopPropagation: true 
+            stopPropagation: true
         })
         this.goodsScroll.on('scroll', pos => {
             if (!pos.y) {
@@ -82,13 +86,12 @@ class CategoryList extends Component{
             this.goodsScroll.scrollToElement(aGoodList[index], 100)
         }
     }
-    closeSkuFn = ()=>{
-        
-    }
+
     render() {
         let {menuIndex} = this.state
-        let {categoryInfo,goodDetail} = this.props
-        console.log(goodDetail)
+        let {categoryInfo, goodDetail} = this.props
+        console.log('goodDetail.showToast')
+        console.log(goodDetail.showToast)
         let menuItem = categoryInfo.goods.map((item, index) => {
             return <li className={classnames('category-menu-item', {'active': menuIndex === index})}
                        onClick={this.selectMenu.bind(this, index)}
@@ -113,10 +116,8 @@ class CategoryList extends Component{
                     </div>
                 </div>
                 {
-                    goodDetail.showSkuToast &&<SkuToast 
-                        goodDetail={goodDetail.goodDetails} 
-                        closeSkuFn={this.closeSkuFn}
-                        onShopcart={this.addShopcart} />
+                    goodDetail.showToast && <SkuToast
+                        goodDetail={goodDetail.goodDetails}/>
                 }
             </div>
 
@@ -124,18 +125,19 @@ class CategoryList extends Component{
 
     }
 }
-const mapStateToProps = (state)=>{
+
+const mapStateToProps = (state) => {
     console.log(state)
-    let {categoryInfo,goodDetail} = state
+    let {categoryInfo, goodDetail} = state
     console.log('goodDetail')
     console.log(goodDetail)
-    return {categoryInfo,goodDetail}
+    return {categoryInfo, goodDetail}
 }
-const mapDispatchToProps = (dispatch,ownProps)=>{
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onGetCategory: ()=>dispatch(actions.getCategory()),
-        onGetGoodDetail: (id)=>dispatch(actions.getGoodDetail(id)),
-        onChangeBuyCount: (id,count)=>dispatch(actions.changeBuyCount(id,count)),
+        onGetCategory: () => dispatch(actions.getCategory()),
+        onGetGoodDetail: (id) => dispatch(actions.getGoodDetail(id)),
+        onChangeBuyCount: (id, count) => dispatch(actions.changeBuyCount(id, count)),
     }
 }
-export default connect(mapStateToProps,mapDispatchToProps)(CategoryList)
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryList)

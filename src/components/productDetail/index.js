@@ -21,19 +21,22 @@ class SkuToast extends Component {
     onChangeNum = (buyCount)=>{
         this.setState({buyCount})
     }
+    closeSkuFn = () => {
+
+    }
     render() {
         let {buyCount} = this.state
         let {goodDetail} = this.props
         return (
             <section className="sku-toast-wrapper">
-                <div className="mask" onClick={this.props.closeSkuFn.bind(this, false)}></div>
+                <div className="mask" onClick={this.closeSkuFn.bind(this, false)}></div>
                 <div className="sku-content">
                     <div className="sku-head">
                         <div className="img"></div>
                         <div className="info">
                             <div className="name ellipsis">【明文脆皮】{goodDetail.name}</div>
                             <div className="price">￥ {goodDetail.price}</div>
-                            <div className="icon-close close" onClick={this.props.closeSkuFn.bind(this, false)}></div>
+                            <div className="icon-close close" onClick={this.closeSkuFn.bind(this, false)}></div>
                         </div>
                     </div>
                     <div className="sku-body">

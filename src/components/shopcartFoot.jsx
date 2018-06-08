@@ -28,6 +28,8 @@ class ShopcartFoot extends Component {
     let total = checkedList.reduce((prevTotal, currentGood) => {
       return prevTotal + currentGood.price * currentGood.count;
     }, 0);
+    console.log(nextProps.shopcartList)
+    console.log(shopcartList.every(shop => shop.checked))
     let allChecked = shopcartList.length !== 0 && shopcartList.every(shop => shop.checked);
     this.setState({ checkedList });
     this.setState({ total: total.toFixed(2) });

@@ -44,6 +44,10 @@ export const getGoodDetail = (goodId) => {
             console.log(err)
         }
     }
+    // return {
+    //     type: types.GOODETAIL,
+    //     goodDetails: {}
+    // }
 }
 export const changeBuyCount = (skuId, count) => {
     return async dispatch => {
