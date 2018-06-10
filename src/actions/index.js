@@ -1,7 +1,7 @@
 import {http} from '../common/http'
 import url from '../common/apiServer'
 import * as types from '../actionTypes/'
-import {makeActionCreator} from './actionCreator'
+import {makeActionCreator,makeAsyncActionCreator} from './actionCreator'
 
 
 import {Toast} from "antd-mobile";
@@ -44,10 +44,6 @@ export const getGoodDetail = (goodId) => {
             console.log(err)
         }
     }
-    // return {
-    //     type: types.GOODETAIL,
-    //     goodDetails: {}
-    // }
 }
 export const changeBuyCount = (skuId, count) => {
     return async dispatch => {

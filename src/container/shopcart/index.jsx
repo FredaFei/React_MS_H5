@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
-import ShopList from 'components/shopList'
-import ShopcartFoot from 'components/shopcartFoot'
+import ShopList from 'components/shopcart/shopList'
+import ShopcartFoot from 'components/shopcart/shopcartFoot'
 import './index.scss'
 
 

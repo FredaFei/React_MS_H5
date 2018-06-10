@@ -44,7 +44,7 @@ class ShopName extends Component {
                     <i className="icon-category"></i>
                     <span className="name">{shop.shopName}</span>
                 </div>
-                <span className="oprator" onClick={this.changeEditStatusFn}>{editText}</span>
+                {!shop.removechecked && <span className="oprator" onClick={this.changeEditStatusFn}>{editText}</span>}
             </div>
         )
     }

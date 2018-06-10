@@ -1,3 +1,7 @@
+import {http} from '../common/http'
+import url from '../common/apiServer'
+import * as types from '../actionTypes/'
+
 function makeActionCreator(type, ...argNames) {
     return function (...args) {
         let action = {type}
@@ -7,4 +11,15 @@ function makeActionCreator(type, ...argNames) {
         return action
     }
 }
-export {makeActionCreator}
+function makeAsyncActionCreator(params) {
+    let {url,callback} = params
+    return async dispatch => {
+        try {
+            let result = await http(url)
+            callback()
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}
+export {makeActionCreator,makeAsyncActionCreator}

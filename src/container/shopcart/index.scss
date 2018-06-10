@@ -9,17 +9,14 @@
   .shopcart-bd {
     position: relative;
     .shop-content {
-      min-height: 7rem;
-      padding-bottom: 2rem;
       .shop-item {
         background: #ffffff;
-        margin-bottom: 0.2rem;
         .shop-name {
           display: flex;
           justify-content: space-between;
           align-items: center;
           flex-direction: row;
-          padding: .3rem .2rem;
+          padding: .2rem;
           background-color: #ffffff;
           .left {
             display: flex;
@@ -31,7 +28,7 @@
               margin-right: 0.2rem;
             }
             .name {
-              font-size: 0.32rem;
+              font-size: 0.28rem;
               color: #333;
             }
           }
@@ -50,6 +47,7 @@
             justify-content: center;
             align-items: center;
             flex-direction: row;
+            margin-bottom: .2rem;
             .check-box {
               flex: 0 0 0.6rem;
             }
@@ -88,27 +86,22 @@
                 }
               }
             }
-          }
-          .del-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 1.2rem;
-            height: 100%;
-            color: #ffffff;
-            font-size: 0.28rem;
-            background: #fe4543;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            .del-btn {
+              position: absolute;
+              top: 0;
+              right: 0;
+              width: 1.2rem;
+              height: 100%;
+              color: #ffffff;
+              font-size: 0.28rem;
+              background: #fe4543;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
           }
         }
       }
-    }
-    .copy {
-      position: absolute;
-      bottom: -.1rem;
-      width: 100%;
     }
   }
   .shopcart-ft {
@@ -133,6 +126,9 @@
     }
     .right {
       flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
       .sum-price {
         margin-right: 0.2rem;
         text-align: right;
@@ -142,6 +138,19 @@
           color: #999;
           font-size: 0.24rem;
         }
+      }
+      .del-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 1.2rem;
+        height: 100%;
+        color: #ffffff;
+        font-size: 0.28rem;
+        background: #fe4543;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .pay-btn {

@@ -6,7 +6,7 @@ import * as actions from "@/actions/";
 
 import ShopDeleteItem from "components/shopDeleteItem/";
 import Controller from "components/controller/";
-import ShopName from "components/shopName";
+import ShopName from "components/shopcart/shopName";
 import {Modal} from "antd-mobile";
 const alert = Modal.alert;
 
@@ -64,9 +64,6 @@ class ShopItem extends Component {
     static propTypes = {
         shop: PropTypes.object.isRequired
     };
-    state = {
-        editText: "编辑"
-    };
     toggleShop(shopId) {
         this.props.onToggleShop(shopId);
     }
@@ -84,7 +81,6 @@ class ShopItem extends Component {
     };
 
     render() {
-        let {editText} = this.state;
         let {shop} = this.props;
         return (
             <section className="shop-item">

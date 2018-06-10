@@ -6,8 +6,10 @@ import './index.scss'
 
 class ScrollBox extends Component {
     static propTypes = {
-        showTop: PropTypes.bool,
-        showBottom: PropTypes.bool
+        showTop: PropTypes.bool
+    }
+    static defaultProps = {
+        showTop: true
     }
     state = {
         upReady: false,
@@ -19,12 +21,12 @@ class ScrollBox extends Component {
     }
     _initScroll=()=>{
         this.scroll = new BScroll(this.refs.page,{
-            probeType: 1,
+            preventDefault: false,
+            probeType: 2,
             scrollY: true,
             click: true
         })
         this.scroll.on('scroll', (pos) => {
-            console.log(pos.y)
             if (pos.y >= 50) {
                 this.setState({
                     upReady: true,
@@ -38,23 +40,14 @@ class ScrollBox extends Component {
             }
         });
         this.scroll.on('scrollEnd', (pos) => {
-            if (this.upReady && this.showTop && pos.y === 0) {
+            let {showTop,showBottom} = this.props
+            if (this.state.upReady && showTop && pos.y === 0) {
                 this.setState({
                     upReady: false,
                     scrollTopText: '下拉刷新'
                 })
                 this.props.onPullUp();
-            } else if (this.showBottom && (this.scroll.y <= this.scroll.maxScrollY + 50)) {
-                this.props.onPullDown();
-                console.log(123)
             }
-        });
-        this.scroll.on('touchEnd', (pos) => {
-            // this.$emit('touchEnd', {
-            //     x: pos.x,
-            //     y: pos.y,
-            //     height: Math.abs(this.scroll.maxScrollY)
-            // });
         });
     }
     refresh = ()=> {

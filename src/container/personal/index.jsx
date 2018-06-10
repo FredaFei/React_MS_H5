@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 import ScrollBox from 'components/scrollBox/'
+import StickyFooter from 'components/stickyFooter/'
 import Cell from 'components/cell/'
 import './index.scss'
 
@@ -22,6 +23,7 @@ class Personal extends Component{
             {name: '我购买的专栏、内容',path: '/index',icon:'icon-arrowright'},
         ]
     }
+    handlePullup = ()=>{}
     render(){
         let {orderMenus,cellForms} = this.state
         let orderMenusLinks = orderMenus.map(item=>{
@@ -40,27 +42,29 @@ class Personal extends Component{
             )
         })
         return (
-            <ScrollBox>
-                <div className="help-wrap">
-                    <section className="avator"><img src="https://img.yzcdn.cn/upload_files/2017/07/04/Fl2o1OPjr2J1Ueyv6QsvVopnufBp.jpg?imageView2/2/w/200/h/200/q/75/format/webp" alt=""/>
-                    </section>
-                    <Cell />
-                    <section className="myorder">
-                        <div className="myorder-title flex-between">
-                            <span className="name">我的订单</span>
-                            <span>查看全部订单<i className='icon-arrowright'></i></span>
-                        </div>
-                        <ul className="myorder-list">{orderMenusLinks}</ul>
-                    </section>
-                    <section className="help-bd">
-                        <div className="cart">
-                            <div className="flex-between">
-                                <span className="name">购物车</span><i className='icon-arrowright'></i>
+            <ScrollBox onPullUp={this.handlePullup}>
+                <StickyFooter>
+                    <div className="help-wrap">
+                        <section className="avator"><img src="https://img.yzcdn.cn/upload_files/2017/07/04/Fl2o1OPjr2J1Ueyv6QsvVopnufBp.jpg?imageView2/2/w/200/h/200/q/75/format/webp" alt=""/>
+                        </section>
+                        <Cell />
+                        <section className="myorder">
+                            <div className="myorder-title flex-between">
+                                <span className="name">我的订单</span>
+                                <span>查看全部订单<i className='icon-arrowright'></i></span>
                             </div>
-                        </div>
-                        <div className="cell-form">{cellFormsLink}</div>
-                    </section>
-                </div>
+                            <ul className="myorder-list">{orderMenusLinks}</ul>
+                        </section>
+                        <section className="help-bd">
+                            <div className="cart">
+                                <div className="flex-between">
+                                    <span className="name">购物车</span><i className='icon-arrowright'></i>
+                                </div>
+                            </div>
+                            <div className="cell-form">{cellFormsLink}</div>
+                        </section>
+                    </div>
+                </StickyFooter>
             </ScrollBox>
         )
     }

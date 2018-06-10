@@ -6,8 +6,8 @@ import * as actions from '@/actions/';
 
 import Cell from 'components/cell/'
 import ScrollBox from 'components/scrollBox/'
-import ShopItem from 'components/shopItem.jsx'
-import CopyRight from 'components/copyRight/'
+import ShopItem from 'components/shopcart/shopItem'
+import StickyFooter from 'components/stickyFooter/'
 
 const EmptyCart = () => {
     return (
@@ -29,6 +29,9 @@ class ShopList extends Component {
             this.props.onGetShopcartList()
         }
     }
+    handlePullup = ()=>{
+        this.props.onGetShopcartList()
+    }
     render() {
         let {shopcartList} = this.props
         let content = null
@@ -42,14 +45,15 @@ class ShopList extends Component {
             </div>
         }
         return (
-            <ScrollBox>
+            <ScrollBox onPullUp={this.handlePullup}>
                 <div className="shopcart-hd">
                     <Cell />
                 </div>
-                <div className="shopcart-bd">
-                    {content}
-                </div>
-                <CopyRight/>
+                <StickyFooter style={{marginBottom: '1rem'}}>
+                    <div className="shopcart-bd">
+                        {content}
+                    </div>
+                </StickyFooter>
             </ScrollBox>
         )
     }
