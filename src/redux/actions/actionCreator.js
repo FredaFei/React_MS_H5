@@ -1,5 +1,5 @@
-import {http} from '../common/http'
-import url from '../common/apiServer'
+import {http} from '@/common/http'
+import url from '@/common/apiServer'
 import * as types from '../actionTypes/'
 
 function makeActionCreator(type, ...argNames) {

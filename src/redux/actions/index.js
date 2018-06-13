@@ -1,8 +1,7 @@
-import {http} from '../common/http'
-import url from '../common/apiServer'
+import {http} from '@/common/http'
+import url from '@/common/apiServer'
 import * as types from '../actionTypes/'
-import {makeActionCreator,makeAsyncActionCreator} from './actionCreator'
-
+import {makeActionCreator} from './actionCreator'
 
 import {Toast} from "antd-mobile";
 
@@ -32,13 +31,33 @@ export const getCategory = () => {
         }
     }
 }
+
 export const getGoodDetail = (goodId) => {
+    // return dispatch =>{
+    //     new Promise((resolve, reject) => {
+    //         setTimeout(() => {
+    //             resolve([])
+    //         }, 2000)
+    //     }).then(val=>{
+    //         dispatch({
+    //             type: types.GOODETAIL,
+    //             goodDetails: val
+    //         });
+    //     })
+    // }
     return async dispatch => {
         try {
+            console.log('action: '+ goodId)
             let result = await http(url.goodDetail, {goodId})
+            // let result = await new Promise((resolve, reject) => {
+            //     setTimeout(() => {
+            //         resolve('haha')
+            //     }, 4000)
+            // })
+            console.log('result: ' + result)
             dispatch({
                 type: types.GOODETAIL,
-                goodDetails: result.data
+                goodDetails: [{a:'123'}]
             })
         } catch (err) {
             console.log(err)

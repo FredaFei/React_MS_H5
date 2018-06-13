@@ -1,5 +1,5 @@
-import * as types from "@/actionTypes/";
-import {shopChecked} from "../actions";
+import * as types from "../actionTypes/";
+import {shopChecked} from "../actions/";
 
 function updataState(oldState, newValue,...rest) {
     return Object.assign({}, oldState, newValue,...rest)

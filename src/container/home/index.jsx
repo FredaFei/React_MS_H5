@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
-import * as actions from '@/actions/'
+import * as actions from '@/redux/actions/'
 
 import {Toast, Carousel, WingBlank} from "antd-mobile";
 import ScrollBox from 'components/scrollBox/'
@@ -46,7 +46,6 @@ const ModuleItem = ({children, index}) => {
     )
 }
 const Slides = ({slides, imgHeight,onSetHeight}) => {
-    console.log(slides)
     return (
         <Carousel autoplay={false} infinite>
             {slides.map(img => (
@@ -80,11 +79,12 @@ class Home extends Component {
         Toast.loading("正在加载", 0);
         this.props.onGetHomeInfo()
     }
-
+    xx=()=>{
+        this.props.onGetGoodDetail(12345)
+    }
     render() {
         let {homeInfo} = this.props
         let {imgHeight} = this.state
-        console.log(homeInfo)
         return (
             <ScrollBox onPullUp={this.handlePullup}>
                 <StickyFooter>
@@ -105,6 +105,9 @@ class Home extends Component {
                         <ModuleItem index="2" key="recommendGoods">
                             <GoodList data={homeInfo.recommendGoods}/>
                         </ModuleItem>
+                        <div className="button">
+                            <button onClick={this.xx}>click me</button>
+                        </div>
                     </div>
                 </StickyFooter>
             </ScrollBox>
@@ -118,7 +121,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onGetHomeInfo: () => dispatch(actions.getHomeInfo())
+        onGetHomeInfo: () => dispatch(actions.getHomeInfo()),
+        onGetGoodDetail: goodId => dispatch(actions.getGoodDetail(goodId))
     }
 }
 

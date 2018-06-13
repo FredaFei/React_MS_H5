@@ -4,7 +4,7 @@ import { AppContainer } from "react-hot-loader";
 import {Provider} from 'react-redux'
 import Router from './router/'
 import registerServiceWorker from './registerServiceWorker';
-import store from '@/store/'
+import store from '@/redux/'
 import './styles/index.scss';
 
 const render = Component=>{

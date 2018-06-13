@@ -2,13 +2,14 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import {connect} from "react-redux";
-import * as actions from "@/actions/";
+import * as actions from '@/redux/actions/'
 
 class CategoryGoodItem extends Component {
     getDetailFn = (e, goodId) => {
         // e.stopPropagation()
+        // e.preventDefault()
         this.props.onGetGoodDetail(goodId)
-        console.log(goodId)
+        console.log('CategoryGoodItem' + goodId)
     }
 
     render() {
@@ -29,9 +30,8 @@ class CategoryGoodItem extends Component {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    // let { goodId } = ownProps;
     return {
-        onGetGoodDetail: (goodId) => dispatch(actions.getGoodDetail(goodId))
+        onGetGoodDetail: goodId => dispatch(actions.getGoodDetail(goodId))
     };
 };
 export default connect(null, mapDispatchToProps)(CategoryGoodItem);

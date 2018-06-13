@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
-import * as actions from '@/actions/'
+import * as actions from '@/redux/actions/'
 
 import {Toast} from "antd-mobile";
 import BScroll from 'better-scroll'
@@ -16,7 +16,7 @@ const GoodList = ({goodList}) => {
             {
                 goodList.map((good, goodIndex) => {
                     return (
-                        <CategoryGoodItem key={goodIndex} good={good}></CategoryGoodItem>
+                        <CategoryGoodItem key={good.info} good={good}></CategoryGoodItem>
                     )
                 })
             }
@@ -46,7 +46,7 @@ class CategoryList extends Component {
         this.menuScroll = new BScroll(this.refs.menuWrapper, {click: true})
         this.goodsScroll = new BScroll(this.refs.goodsWrapper, {
             click: true,
-            probeType: 3,
+            probeType: 1,
             stopPropagation: true
         })
         this.goodsScroll.on('scroll', pos => {
@@ -86,12 +86,12 @@ class CategoryList extends Component {
             this.goodsScroll.scrollToElement(aGoodList[index], 100)
         }
     }
-
+    xx = ()=>{
+        this.props.onGetGoodDetail(123)
+    }
     render() {
         let {menuIndex} = this.state
         let {categoryInfo, goodDetail} = this.props
-        console.log('goodDetail.showToast')
-        console.log(goodDetail.showToast)
         let menuItem = categoryInfo.goods.map((item, index) => {
             return <li className={classnames('category-menu-item', {'active': menuIndex === index})}
                        onClick={this.selectMenu.bind(this, index)}
@@ -100,25 +100,26 @@ class CategoryList extends Component {
         let goodsItem = categoryInfo.goods.map((item, index) => {
             return (
                 <li className="category-goods-item" key={item.type}>
-                    <h1 className="category-title">{item.name}</h1>
+                    <h1 className="category-title" onClick={this.xx}>{item.name}</h1>
                     <GoodList goodList={item.goodList}></GoodList>
                 </li>
             );
         })
         return (
-            <div className="page-wrapper">
+            <div className="cate-wrapper">
                 <div className="category-container page-bd">
                     <div className="menu-wrapper" ref="menuWrapper">
                         <ul className="menu-list">{menuItem}</ul>
+                        <button onClick={this.xx}>click me </button>
                     </div>
                     <div className="goods-wrapper" ref="goodsWrapper">
                         <ul className="goods-list">{goodsItem}</ul>
                     </div>
                 </div>
-                {
-                    goodDetail.showToast && <SkuToast
-                        goodDetail={goodDetail.goodDetails}/>
-                }
+                {/*{*/}
+                    {/*goodDetail.showToast && <SkuToast*/}
+                        {/*goodDetail={goodDetail.goodDetails}/>*/}
+                {/*}*/}
             </div>
 
         )
@@ -127,17 +128,14 @@ class CategoryList extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state)
     let {categoryInfo, goodDetail} = state
-    console.log('goodDetail')
-    console.log(goodDetail)
     return {categoryInfo, goodDetail}
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         onGetCategory: () => dispatch(actions.getCategory()),
         onGetGoodDetail: (id) => dispatch(actions.getGoodDetail(id)),
-        onChangeBuyCount: (id, count) => dispatch(actions.changeBuyCount(id, count)),
+        // onChangeBuyCount: (id, count) => dispatch(actions.changeBuyCount(id, count)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryList)
