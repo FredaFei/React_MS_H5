@@ -33,31 +33,14 @@ export const getCategory = () => {
 }
 
 export const getGoodDetail = (goodId) => {
-    // return dispatch =>{
-    //     new Promise((resolve, reject) => {
-    //         setTimeout(() => {
-    //             resolve([])
-    //         }, 2000)
-    //     }).then(val=>{
-    //         dispatch({
-    //             type: types.GOODETAIL,
-    //             goodDetails: val
-    //         });
-    //     })
-    // }
     return async dispatch => {
         try {
             console.log('action: '+ goodId)
             let result = await http(url.goodDetail, {goodId})
-            // let result = await new Promise((resolve, reject) => {
-            //     setTimeout(() => {
-            //         resolve('haha')
-            //     }, 4000)
-            // })
             console.log('result: ' + result)
             dispatch({
                 type: types.GOODETAIL,
-                goodDetails: [{a:'123'}]
+                goodDetails: []
             })
         } catch (err) {
             console.log(err)
@@ -121,4 +104,5 @@ export const toggleShop = makeActionCreator(types.TOGGLESHOP,'shopId')
 export const shopChecked = makeActionCreator(types.ONECHECKEDSHOP,'shopId')
 export const checkedAllShop = makeActionCreator(types.CHECKEDALLSHOP)
 export const toggleEditStatus = makeActionCreator(types.TOGGLESTATUS,'shopId')
+export const closeToast = makeActionCreator(types.TOGGLESTATUS)
 

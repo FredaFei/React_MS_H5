@@ -22,7 +22,7 @@ class SkuToast extends Component {
         this.setState({buyCount})
     }
     closeSkuFn = () => {
-
+        this.props.onCloseToast()
     }
     render() {
         let {buyCount} = this.state
@@ -39,7 +39,7 @@ class SkuToast extends Component {
                             <div className="icon-close close" onClick={this.closeSkuFn.bind(this, false)}></div>
                         </div>
                     </div>
-                    <div className="sku-body">
+                    {/*<div className="sku-body">
                         <div className="cell-form">
                             <div className="cell-item">
                                 <div className="left">
@@ -55,7 +55,7 @@ class SkuToast extends Component {
                                 }
                                 </div>
                         </div>
-                    </div>
+                    </div>*/}
                     <div className="sku-foot">
                         <button className="btn" onClick={this.addShopcartFn.bind(this)}>加入购物车</button>
                         <button className="btn" onClick={this.immediatePurchaseFn.bind(this)}>立即购买</button>
