@@ -13,22 +13,23 @@ class SkuToast extends Component {
     addShopcartFn = () => {
         let {buyCount} = this.state
         let {goodDetail} = this.props
-        this.props.onShopcart(goodDetail.goodId,buyCount)
-        this.props.closeSkuFn()
+        this.props.onAddShopcart(goodDetail.goodId, buyCount)
     }
     immediatePurchaseFn = () => {
+        this.addShopcartFn()
     }
-    onChangeNum = (buyCount)=>{
+    onChangeNum = (buyCount) => {
         this.setState({buyCount})
     }
     closeSkuFn = () => {
         this.props.onCloseToast()
     }
+
     render() {
         let {buyCount} = this.state
         let {goodDetail} = this.props
         return (
-            <section className="sku-toast-wrapper">
+            <section className="sku-toast-wrapper" ref={el => this.showToast = el}>
                 <div className="mask" onClick={this.closeSkuFn.bind(this, false)}></div>
                 <div className="sku-content">
                     <div className="sku-head">
@@ -39,7 +40,7 @@ class SkuToast extends Component {
                             <div className="icon-close close" onClick={this.closeSkuFn.bind(this, false)}></div>
                         </div>
                     </div>
-                    {/*<div className="sku-body">
+                    <div className="sku-body">
                         <div className="cell-form">
                             <div className="cell-item">
                                 <div className="left">
@@ -48,19 +49,20 @@ class SkuToast extends Component {
                                 </div>
                                 {
                                     goodDetail.stock &&
-                                    <Controller stock={goodDetail.stock} 
-                                                buyCount={buyCount} 
+                                    <Controller stock={goodDetail.stock}
+                                                buyCount={buyCount}
                                                 maxCount={goodDetail.maxCount}
-                                                onChangeNum={this.onChangeNum} />
+                                                onChangeNum={this.onChangeNum}/>
                                 }
-                                </div>
+                            </div>
                         </div>
-                    </div>*/}
+                    </div>
                     <div className="sku-foot">
                         <button className="btn" onClick={this.addShopcartFn.bind(this)}>加入购物车</button>
                         <button className="btn" onClick={this.immediatePurchaseFn.bind(this)}>立即购买</button>
                     </div>
                 </div>
+
             </section>
         )
     }

@@ -3,8 +3,6 @@ import url from '@/common/apiServer'
 import * as types from '../actionTypes/'
 import {makeActionCreator} from './actionCreator'
 
-import {Toast} from "antd-mobile";
-
 export const getHomeInfo = () => {
     return async dispatch => {
         try {
@@ -31,16 +29,12 @@ export const getCategory = () => {
         }
     }
 }
-
-export const getGoodDetail = (goodId) => {
+export const addShopcart = (goodId,count) => {
     return async dispatch => {
         try {
-            console.log('action: '+ goodId)
-            let result = await http(url.goodDetail, {goodId})
-            console.log('result: ' + result)
+            await http(url.addShopcart, {goodId,count})
             dispatch({
-                type: types.GOODETAIL,
-                goodDetails: []
+                type: types.ADDSHOPCART
             })
         } catch (err) {
             console.log(err)
@@ -50,7 +44,7 @@ export const getGoodDetail = (goodId) => {
 export const changeBuyCount = (skuId, count) => {
     return async dispatch => {
         try {
-            let result = await http(url.setCount, {skuId, count})
+            await http(url.setCount, {skuId, count})
             dispatch({
                 type: types.CHANGEBUYCOUNT,
                 skuId,

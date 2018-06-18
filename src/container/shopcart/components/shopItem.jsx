@@ -6,7 +6,7 @@ import * as actions from '@/redux/actions/'
 
 import ShopDeleteItem from "components/shopDeleteItem/";
 import Controller from "components/controller/";
-import ShopName from "components/shopcart/shopName";
+import ShopName from "./shopName";
 import {Modal} from "antd-mobile";
 const alert = Modal.alert;
 

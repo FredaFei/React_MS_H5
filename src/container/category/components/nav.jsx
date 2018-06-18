@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
-import * as actions from '@/redux/actions/'
-
-import {Toast} from "antd-mobile";
 
 class Nav extends Component {
+    static propTypes = {
+        navs: PropTypes.array.isRequired,
+        menuIndex: PropTypes.number.isRequired
+    }
     selectMenu = (index) => {
         this.props.selectMenu(index)
     }

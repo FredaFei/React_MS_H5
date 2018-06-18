@@ -1,5 +1,4 @@
 import * as types from "../actionTypes/";
-import {shopChecked} from "../actions/";
 
 function updataState(oldState, newValue,...rest) {
     return Object.assign({}, oldState, newValue,...rest)
@@ -104,7 +103,6 @@ function changeBuyCount(state,action) {
     });
 }
 export default (state = defaultState, action) => {
-    let tempShopList = [...state.shopcartList];
     switch (action.type) {
         case types.SHOPCART: return updataState(state, {shopcartList: action.shopList});
         case types.TOGGLEGOOD: return toggleGood(state,action)

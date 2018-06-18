@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
 import * as actions from '@/redux/actions/'
 
-import {Toast, Carousel, WingBlank} from "antd-mobile";
+import {Toast, Carousel} from "antd-mobile";
 import ScrollBox from 'components/scrollBox/'
 import StickyFooter from 'components/stickyFooter/'
 import Title from 'components/title/'
@@ -45,14 +45,14 @@ const ModuleItem = ({children, index}) => {
         </div>
     )
 }
-const Slides = ({slides, imgHeight,onSetHeight}) => {
+const Slides = ({slides, imgHeight, onSetHeight}) => {
     return (
         <Carousel autoplay={false} infinite>
             {slides.map(img => (
                 <a key={img.text} href={img.href}
-                    style={{display: 'inline-block', width: '100%', height: imgHeight}}>
+                   style={{display: 'inline-block', width: '100%', height: imgHeight}}>
                     <img src={img.imgUrl} alt={img.text}
-                        style={{width: '100%', height: '100%', verticalAlign: 'middle'}}/>
+                         style={{width: '100%', height: '100%', verticalAlign: 'middle'}}/>
                 </a>
             ))}
         </Carousel>
@@ -67,21 +67,19 @@ class Home extends Component {
     state = {
         imgHeight: '3.6rem',
     }
-
     componentWillMount() {
         Toast.loading("正在加载", 0);
         this.props.onGetHomeInfo()
     }
-    handleHeight = ()=>{
+
+    handleHeight = () => {
         this.setState({imgHeight: 'auto'})
     }
     handlePullup = () => {
         Toast.loading("正在加载", 0);
         this.props.onGetHomeInfo()
     }
-    xx=()=>{
-        this.props.onGetGoodDetail(12345)
-    }
+
     render() {
         let {homeInfo} = this.props
         let {imgHeight} = this.state
@@ -89,11 +87,14 @@ class Home extends Component {
             <ScrollBox onPullUp={this.handlePullup}>
                 <StickyFooter>
                     <div className="home-container">
-                        <div className="swiper-wrapper">{
-                            homeInfo.slides && <Slides slides={homeInfo.slides} onSetHeight={this.handleHeight} imgHeight={imgHeight} />
-                        }</div>
+                        <div className="swiper-wrapper">
+                            {
+                                homeInfo.slides &&
+                                <Slides slides={homeInfo.slides} onSetHeight={this.handleHeight} imgHeight={imgHeight}/>
+                            }
+                        </div>
                         <div className="search padding-s_2">
-                            <i className="icon-usercenter"></i>
+                            <i className="icon-search"></i>
                             <input type="text" placeholder="搜索商品"/>
                         </div>
                         <ModuleItem index="0" key="hotGoods">
@@ -105,9 +106,6 @@ class Home extends Component {
                         <ModuleItem index="2" key="recommendGoods">
                             <GoodList data={homeInfo.recommendGoods}/>
                         </ModuleItem>
-                        <div className="button">
-                            <button onClick={this.xx}>click me</button>
-                        </div>
                     </div>
                 </StickyFooter>
             </ScrollBox>
@@ -121,8 +119,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onGetHomeInfo: () => dispatch(actions.getHomeInfo()),
-        onGetGoodDetail: goodId => dispatch(actions.getGoodDetail(goodId))
+        onGetHomeInfo: () => dispatch(actions.getHomeInfo())
     }
 }
 

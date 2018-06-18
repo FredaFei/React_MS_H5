@@ -1,7 +1,7 @@
 let url = {
     homeInfo: '/homeInfo',
     category: '/cagoryList',
-    goodDetail: '/goodDetail',
+    addShopcart: '/addShopcart',
     setCount: '/setCount',
     shopCart: '/shopCart',
     deleteGood: '/removeGoods'

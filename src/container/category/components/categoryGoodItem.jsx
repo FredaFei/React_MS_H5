@@ -20,7 +20,7 @@ class CategoryGoodItem extends Component {
                 <div className="desc">
                     <div className="info">{good.name}</div>
                     <div className="price">￥{good.price.toFixed(2)}</div>
-                    <div className="control" onClick={e => this.getDetailFn(good)}>+</div>
+                    <div className="control" onClick={e => this.getDetailFn(good)}><i className="icon-add"></i></div>
                 </div>
             </li>
         );

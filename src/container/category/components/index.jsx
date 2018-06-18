@@ -1,24 +1,24 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import classnames from 'classnames'
 import {connect} from 'react-redux'
 import * as actions from '@/redux/actions/'
 
-import BScroll from 'better-scroll'
 import {Toast} from "antd-mobile";
 import Nav from './nav'
-import GoodMenu from './goodMenu'
-import CategoryGoodItem from 'components/categoryGoodItem'
+import CategoryGoodItem from './categoryGoodItem'
 import SkuToast from 'components/productDetail/'
 
 class CategoryMenu extends Component {
+    static propTypes = {
+        categoryInfo: PropTypes.object.isRequired
+    }
     state = {
         menuIndex: 0,
-        styleTop: {
-            top: '0px'
-        }
+        showSkuToast: false,
+        currentGoods: {}
     }
     goodsHeightList = [0]
+
     componentWillMount() {
         Toast.loading("正在加载", 0);
         this.props.onGetCategory()
@@ -30,20 +30,14 @@ class CategoryMenu extends Component {
             this.calculateHeight()
         }, 0)
     }
-    componentDidMount(){
-    }
+
     initScroll = () => {
-        this.menuScroll = new BScroll(this.refs.menuWrapper, {click: true})
-        this.goodsScroll = new BScroll(this.refs.goodsWrapper, {
-            click: true,
-            probeType: 3,
-            // stopPropagation: true
-        })
-        this.goodsScroll.on('scroll', pos => {
-            if (!pos.y) {
+        this.refs.goodsWrapper.addEventListener('scroll', pos => {
+            if (!pos.target.scrollTop) {
                 return
             }
-            this.scrollY = Math.abs(Math.round(pos.y))
+            let top = pos.target.scrollTop
+            this.scrollY = Math.abs(Math.round(top))
             const index = this.calculateCurrentIndex()
             if (this.state.menuIndex !== index) {
                 this.setState({
@@ -51,19 +45,6 @@ class CategoryMenu extends Component {
                 })
             }
         })
-        // this.refs.goodsWrapper.addEventListener('scroll', pos => {
-        //     if (!pos.target.scrollTop) {
-        //         return
-        //     }
-        //     let top = pos.target.scrollTop
-        //     this.scrollY = Math.abs(Math.round(top))
-        //     const index = this.calculateCurrentIndex()
-        //     if (this.state.menuIndex !== index) {
-        //         this.setState({
-        //             menuIndex: index
-        //         })
-        //     }
-        // })
     }
     calculateHeight = () => {
         let aGoodList = [...this.refs.goodsWrapper.querySelectorAll('.category-goods-item')]
@@ -85,27 +66,29 @@ class CategoryMenu extends Component {
     }
     selectMenu = (index) => {
         if (this.state.menuIndex !== index) {
-            let aGoodList = this.refs.goodsWrapper.querySelectorAll('.category-goods-item')
-            this.goodsScroll.scrollToElement(aGoodList[index], 100)
-            console.log(index)
-            console.log(aGoodList[index].clientHeight)
-            // this.setState({
-            //     styleTop: {transform: `translate(0px,-${aGoodList[index].clientHeight*2}px) translateZ(0px)`}
-            // })
-            // this.refs.goodsWrapper.scrollTo({
-            //     top: aGoodList[index],
-            //     behavior: "smooth"
-            // });
-            // this.refs.goodsWrapper.scrollTop = aGoodList[index].clientHeight * 2
+            this.refs.goodsWrapper.scrollTop = this.goodsHeightList[index]
+            this.setState({
+                menuIndex: index
+            })
         }
     }
-    closeToast = ()=>{
-        console.log(90)
-        this.props.onClose()
+    selectGoodsFn = (good) => {
+        this.setState(prevState => ({
+            currentGoods: good
+        }));
+        this.toggleSkuFn()
     }
+    toggleSkuFn = () => {
+        this.setState(prevState => ({showSkuToast: !prevState.showSkuToast}));
+    }
+    addShopcartFn = (id, count) => {
+        this.props.onAdd(id, count)
+        this.toggleSkuFn();
+    }
+
     render() {
-        let {menuIndex,styleTop} = this.state
-        let {categoryInfo,goodDetail} = this.props
+        let {menuIndex, currentGoods, showSkuToast} = this.state
+        let {categoryInfo} = this.props
         let {category} = categoryInfo
         let navs = []
         if (category) {
@@ -119,31 +102,33 @@ class CategoryMenu extends Component {
                     <Nav navs={navs} menuIndex={menuIndex} selectMenu={this.selectMenu}/>
                 </div>
                 <div className="goodmenu-content" ref="goodsWrapper">
-                    <div className="goodlist" style={styleTop}>
+                    <div className="goodlist">
                         {
                             category && category.map((typeItem, index) => {
                                 return <div className="category-goods-item" key={typeItem.type}>
-                                    <h1 className="category-title" onClick={this.xx}>{typeItem.name}</h1>
+                                    <div className="category-title"
+                                        onClick={this.addShopcartFn.bind(this, 1, 2)}>{typeItem.name}</div>
                                     <ul>
                                         {
                                             typeItem.goodList.map((good, goodIndex) => {
                                                 return (
-                                                    <CategoryGoodItem key={good.info} good={good}></CategoryGoodItem>
+                                                    <CategoryGoodItem key={good.info} good={good}
+                                                                      onClick={this.addShopcartFn.bind(1, 2)}
+                                                                      onChangeToast={this.selectGoodsFn}></CategoryGoodItem>
                                                 )
                                             })
                                         }
                                     </ul>
-
                                 </div>
                             })
                         }
                     </div>
                 </div>
                 {
-                    goodDetail.showToast && <SkuToast
-                      goodDetail={goodDetail.goodDetails} onCloseToast={this.closeToast}/>
-               }
-                {/*<GoodMenu googs={goodList}/>*/}
+                    showSkuToast && <SkuToast goodDetail={currentGoods}
+                                              onAddShopcart={this.addShopcartFn}
+                                              onCloseToast={this.toggleSkuFn}/>
+                }
             </div>
         )
     }
@@ -151,14 +136,13 @@ class CategoryMenu extends Component {
 
 const mapStateToProps = (state) => {
     console.log(state)
-    let {categoryInfo, goodDetail} = state
-    return {categoryInfo, goodDetail}
+    let {categoryInfo} = state
+    return {categoryInfo}
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         onGetCategory: () => dispatch(actions.getCategory()),
-        onGetGoodDetail: (id) => dispatch(actions.getGoodDetail(id)),
-        onClose: () => dispatch(actions.closeToast()),
+        onAdd: (id, count) => dispatch(actions.addShopcart(id, count)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryMenu)

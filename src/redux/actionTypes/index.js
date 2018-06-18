@@ -13,5 +13,4 @@ export const DELETEMOREGOOD = 'DELETEMOREGOOD'
 
 //分类
 export const CATEGORY = 'CATEGORY'
-export const GOODETAIL = 'GOODETAIL'
-export const TOGGLEDETAIL = 'TOGGLEDETAIL'
+export const ADDSHOPCART = 'ADDSHOPCART'

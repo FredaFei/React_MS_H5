@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import {connect} from 'react-redux';
 import * as actions from '@/redux/actions/'
 
 import Cell from 'components/cell/'
 import ScrollBox from 'components/scrollBox/'
-import ShopItem from 'components/shopcart/shopItem'
 import StickyFooter from 'components/stickyFooter/'
+import ShopItem from './shopItem'
 
 const EmptyCart = () => {
     return (

@@ -8,6 +8,9 @@ import {Modal} from "antd-mobile";
 const alert = Modal.alert;
 
 class ShopcartFoot extends Component {
+    static propTypes = {
+        shopcartList: PropTypes.array.isRequired
+    }
     state = {
         editing: false,
         allChecked: false,

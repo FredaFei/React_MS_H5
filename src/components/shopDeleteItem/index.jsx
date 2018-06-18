@@ -40,7 +40,7 @@ class HelpCenter extends Component {
     }
     touchEnd = (e) => {
         if (e.touches.length === 1) {
-            let {startX, endX, minX, maxX, difX} = this.state
+            let {startX, endX, maxX, difX} = this.state
             endX = e.changedTouches[0].clientX
             difX = startX - endX
             if (difX < maxX / 2) {

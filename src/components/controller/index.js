@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import './index.scss'
 
-import { Toast } from "antd-mobile";
 class Controller extends Component {
     static propTypes = {
         maxCount: PropTypes.number.isRequired,
