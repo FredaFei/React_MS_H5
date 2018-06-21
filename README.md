@@ -1,5 +1,5 @@
 # MS-h5
-曼食慢语H5项目
+> 曼食慢语H5项目
 
 实现的主要有四个模块
 首页、分类、购物车、个人中心
@@ -33,10 +33,16 @@
     |   |   |── index.js
     |   |── router                            // 路由
     |   |   |── index.js
-    |   |── style                            // 公共样式
+    |   |── style                             // 公共样式
     |   |   |── index.scss
     |   |   |── fonts
     |   |   |── ...
-    |   |── asyncComponent.jsx               // 异步加载组件
+    |   |── asyncComponent.jsx                // 异步加载组件
     |   └── index.js
     |──...
+
+
+
+### 预览截图
+
+![截图](https://github.com/FredaFei/React_MS_H5/blob/1.png)
