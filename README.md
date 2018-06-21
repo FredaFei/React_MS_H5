@@ -45,4 +45,4 @@
 
 ### 预览截图
 
-![截图](https://github.com/FredaFei/React_MS_H5/blob/preview_1.png)
+![截图](https://github.com/FredaFei/React_MS_H5/blob/preview.gif)
