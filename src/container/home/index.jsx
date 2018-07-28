@@ -67,11 +67,9 @@ class Home extends Component {
     state = {
         imgHeight: '3.6rem',
     }
-    componentWillMount() {
-        Toast.loading("正在加载", 0);
+    componentDidMount(){
         this.props.onGetHomeInfo()
     }
-
     handleHeight = () => {
         this.setState({imgHeight: 'auto'})
     }

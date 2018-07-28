@@ -1,9 +1,5 @@
 import axios from "axios";
 import { Toast } from "antd-mobile";
-// import configureStore from "../store/configureStore";
-// import { logout } from "../actions/user";
-
-// const store = configureStore();
 
 axios.defaults.timeout = 5000;
 // 超时重试次数和间隔
@@ -46,7 +42,6 @@ axios.interceptors.response.use(
       Toast.hide();
       const config = error.config;
       config.loadText = "请求超时，正在重试";
-      console.log(error);
       if (!config || !config.maxRetryCount) return Promise.reject(error);
       config.retryCount = config.retryCount || 0;
       if (config.retryCount >= config.maxRetryCount) {

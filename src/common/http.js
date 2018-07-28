@@ -7,7 +7,6 @@ const post = (url,params={})=>{
             .then(res=>{
                 let {success,message} = res.data
                 if(success === true){
-                  console.log(res.data)
                     resolve(res.data)
                 }
                 reject(res.message)
